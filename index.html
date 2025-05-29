@@ -44,12 +44,12 @@
             @apply text-gray-400 text-center;
         }
         .card-container {
-             @apply bg-white p-6 sm:p-10 rounded-xl shadow-2xl w-full max-w-3xl; /* Increased max-width */
+             @apply bg-white p-6 sm:p-10 rounded-xl shadow-2xl w-full max-w-none; /* Increased max-width */
         }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
-<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-10">
     <div class="card-container">
         <header class="mb-8 text-center">
             <h1 class="text-3xl sm:text-4xl font-bold text-gray-800">Visita a Terreno QR</h1>
@@ -103,13 +103,17 @@
         // Default message content
         const defaultMensaje = `•LICITACION: 
 •INGENIERO DE COMPRAS: 
-•DATOS EMPRESA
-•EMPRESA: NOMBRE EMPRESA
-•NOMBRE Y APELLIDO: INDICAR SOLO UN ASISTENTE POR EMPRESA
+•N° DOC RFP ARIBA (OPCIONAL): 
+
+•DATOS EMPRESA:
+•EMPRESA: 
+•NOMBRE Y APELLIDO: 
 •RUT: 
-•NOTA: 
-•EMPRESAS ASISTENTES: (POR ITO)
-•ACUERDOS: (POR ITO)`;
+•NOTA: CONFIRMO COMO EMPRESA QUE ESTOY EN CONOCIMIENTO DE LAS ESPECIFICACIONES TECNICAS DE LICITACION Y ALCANCES DEL SERVICIO REVISADOS EN TERRENO.
+
+•ITO SOLICITANTE:
+•EMPRESAS ASISTENTES (COMPLETA ITO):
+•ACUERDOS (COMPLETA ITO):`;
 
         // DOM Elements
         const emailField = document.getElementById('email');
