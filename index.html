@@ -58,7 +58,7 @@
         <main>
             <div class="space-y-6">
                 <div>
-                    <label class="label-text">Email (Fijo):</label>
+                    <label class="label-text">Email:</label>
                     <input type="text" id="email" value="o365-transversal-prd@arauco.com" class="input-field bg-gray-100 cursor-not-allowed" readonly>
                 </div>
 
@@ -69,7 +69,9 @@
 
                 <div>
                     <label for="mensaje" class="label-text">Mensaje:</label>
-                    <textarea id="mensaje" rows="10" class="input-field"></textarea>
+                    <div class="mt-1"> 
+                        <textarea id="mensaje" rows="10" class="input-field" style="width: 100%"></textarea>
+                    </div>
                 </div>
 
                 <div class="flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0 pt-2">
@@ -111,11 +113,11 @@
 
         // DOM Elements
         const emailField = document.getElementById('email');
-        const asuntoField = document.getElementById('asunto'); // Changed ID from asuntoComplementoField
+        const asuntoField = document.getElementById('asunto');
         const mensajeField = document.getElementById('mensaje');
         const generarQRButton = document.getElementById('generarQR');
         const descargarQRButton = document.getElementById('descargarQR');
-        const qrcodeDisplayContainer = document.getElementById('qrcodeDisplayContainer'); // Renamed
+        const qrcodeDisplayContainer = document.getElementById('qrcodeDisplayContainer');
         const messageBox = document.getElementById('messageBox');
         const messageText = document.getElementById('messageText');
 
@@ -127,11 +129,11 @@
         // Function to show a message to the user
         function showMessage(message, type = 'error') {
             messageText.textContent = message;
-            messageBox.classList.remove('hidden', 'bg-red-500', 'bg-green-500', 'bg-sky-500'); // Added sky for success
+            messageBox.classList.remove('hidden', 'bg-red-500', 'bg-green-500', 'bg-sky-500');
             if (type === 'error') {
                 messageBox.classList.add('bg-red-500');
             } else { // 'success'
-                messageBox.classList.add('bg-sky-500'); // Using sky for success message
+                messageBox.classList.add('bg-sky-500');
             }
             messageBox.classList.remove('hidden');
             // Make it disappear after 3 seconds
@@ -143,12 +145,12 @@
         // Function to generate QR Code
         function generarCodigoQR() {
             const email = emailField.value;
-            const asuntoBase = ""; // This prefix is maintained internally
-            const asuntoIngresado = asuntoField.value.trim(); // Value from the new asunto field
-            const asuntoCompleto = asuntoBase + asuntoIngresado;
+            // const asuntoBase = "Mail de Ariba "; // Prefix removed as per request
+            const asuntoIngresado = asuntoField.value.trim();
+            const asuntoCompleto = asuntoIngresado; // No more base prefix
             const mensaje = mensajeField.value;
 
-            if (!asuntoIngresado) { // Check the new asunto field
+            if (!asuntoIngresado) {
                 showMessage("Por favor, complete el campo 'Asunto'.");
                 asuntoField.focus();
                 return;
@@ -176,17 +178,16 @@
 
             try {
                 // Create a div for QRCode.js to attach to.
-                // This div will be styled by qrcodeDisplayContainer's flex properties.
                 const qrDiv = document.createElement('div');
                 qrcodeDisplayContainer.appendChild(qrDiv);
 
                 qrCodeInstance = new QRCode(qrDiv, {
                     text: mailtoLink,
-                    width: 256, // Standard size, can be adjusted
+                    width: 256,
                     height: 256,
                     colorDark: "#000000",
                     colorLight: "#ffffff",
-                    correctLevel: QRCode.CorrectLevel.H // High correction level for better scannability
+                    correctLevel: QRCode.CorrectLevel.H
                 });
                 descargarQRButton.disabled = false;
                 showMessage("Código QR generado exitosamente.", "success");
@@ -206,7 +207,6 @@
                 return;
             }
             
-            // QRCode.js can render to canvas or img. Prefer canvas for toDataURL.
             const canvas = qrcodeDisplayContainer.querySelector('canvas');
             const img = qrcodeDisplayContainer.querySelector('img');
 
@@ -218,9 +218,9 @@
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
-            } else if (img && img.src) { // Fallback if rendered as img (e.g. if canvas is not supported or by library's choice)
+            } else if (img && img.src) {
                 const link = document.createElement('a');
-                link.href = img.src; // img.src will be a data URL if generated by qrcode.js
+                link.href = img.src;
                 link.download = 'visita_terreno_qr.png';
                 document.body.appendChild(link);
                 link.click();
@@ -236,7 +236,7 @@
         descargarQRButton.addEventListener('click', descargarCodigoQR);
 
         // Initial placeholder setup
-        if (qrcodeDisplayContainer.innerHTML.trim() === '') { // Check if it's empty
+        if (qrcodeDisplayContainer.innerHTML.trim() === '') {
              qrcodeDisplayContainer.innerHTML = '<p class="qr-placeholder">El código QR aparecerá aquí</p>';
         }
     </script>
