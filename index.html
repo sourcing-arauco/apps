@@ -6,115 +6,49 @@
     <title>Visita a Terreno QR</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-        /* Custom styles for a more modern visual appeal */
-        .btn-primary {
-            @apply bg-sky-600 hover:bg-sky-700 text-white font-bold py-3 px-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 ease-in-out transform hover:-translate-y-0.5;
-        }
-        .btn-secondary {
-            @apply bg-slate-600 hover:bg-slate-700 text-white font-bold py-3 px-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 ease-in-out transform hover:-translate-y-0.5;
-        }
-        .input-field {
-            @apply block w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-sky-500 focus:border-sky-500 transition duration-150 ease-in-out;
-        }
-        .label-text {
-            @apply block text-sm font-medium text-gray-700 mb-1;
-        }
-        #qrcodeDisplayContainer { /* Renamed for clarity */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 10px;
-            border: 1px solid #e5e7eb; /* gray-200 */
-            border-radius: 0.5rem; /* rounded-lg */
-            background-color: white;
-            min-height: 280px; /* Ensure space for QR code */
-            margin-top: 1rem;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06); /* Added subtle shadow */
-        }
-        #qrcodeDisplayContainer img { /* Ensure img within container is responsive */
-            max-width: 100%;
-            height: auto;
-            border-radius: 0.25rem; /* Slightly rounded corners for the QR image itself */
-        }
-        .qr-placeholder {
-            @apply text-gray-400 text-center;
-        }
-        .card-container {
-             @apply bg-white p-6 sm:p-10 rounded-xl shadow-2xl w-full max-w-none; /* Increased max-width */
-        }
-    </style>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+    <script>
+        emailjs.init("s7IaGxCaCVj4-GfOU"); // Reemplaza con tu User ID de EmailJS
+    </script>
 </head>
-<body class="bg-gray-100 min-h-screen flex items-center justify-center p-10">
-    <div class="card-container">
-        <header class="mb-8 text-center">
-            <h1 class="text-3xl sm:text-4xl font-bold text-gray-800">Visita a Terreno QR</h1>
-        </header>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-10 font-sans">
+    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-2xl">
+        <h1 class="text-3xl font-bold mb-6 text-center">Visita a Terreno QR</h1>
+        <div class="mb-4">
+            <label class="block font-medium mb-1">Email:</label>
+            <input type="text" id="email" value="o365-transversal-prd@arauco.com" readonly class="bg-gray-100 p-3 w-full rounded border">
+        </div>
 
-        <main>
-            <div class="space-y-6">
-                <div>
-                    <label class="label-text">Email:</label>
-                    <input type="text" id="email" value="o365-transversal-prd@arauco.com" class="input-field bg-gray-100 cursor-not-allowed" readonly>
-                </div>
-
-                <div>
-                    <label for="asunto" class="label-text">Asunto:</label>
-                    <input type="text" id="asunto" placeholder="Ingrese el asunto..." class="input-field">
-                </div>
-
-                <div>
-                    <label for="mensaje" class="label-text">Mensaje:</label>
-                    <div class="mt-1"> 
-                        <textarea id="mensaje" rows="10" class="input-field" style="width: 100%"></textarea>
-                    </div>
-                </div>
-
-                <div class="flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0 pt-2">
-                    <button id="generarQR" class="btn-primary w-full sm:w-auto">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 inline-block mr-2 align-middle">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 4.875c0-1.036.84-1.875 1.875-1.875h4.5c1.036 0 1.875.84 1.875 1.875v4.5c0 1.036-.84 1.875-1.875 1.875h-4.5A1.875 1.875 0 0 1 3.75 9.375v-4.5ZM3.75 14.625c0-1.036.84-1.875 1.875-1.875h4.5c1.036 0 1.875.84 1.875 1.875v4.5c0 1.036-.84 1.875-1.875 1.875h-4.5a1.875 1.875 0 0 1-1.875-1.875v-4.5ZM13.5 4.875c0-1.036.84-1.875 1.875-1.875h4.5c1.036 0 1.875.84 1.875 1.875v4.5c0 1.036-.84 1.875-1.875 1.875h-4.5A1.875 1.875 0 0 1 13.5 9.375v-4.5ZM13.5 14.625c0-1.036.84-1.875 1.875-1.875h4.5c1.036 0 1.875.84 1.875 1.875v4.5c0 1.036-.84 1.875-1.875 1.875h-4.5a1.875 1.875 0 0 1-1.875-1.875v-4.5Z" />
-                        </svg>
-                        Generar QR
-                    </button>
-                    <button id="descargarQR" class="btn-secondary w-full sm:w-auto" disabled>
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 inline-block mr-2 align-middle">
-                          <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
-                        </svg>
-                        Descargar QR
-                    </button>
-                </div>
+<div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Mail ITO (para):</label>
+                <input type="email" id="to_email" placeholder="Ej: ito@ejemplo.com" class="block w-full p-3 border border-gray-300 rounded-lg">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Mail Usuario (con copia):</label>
+                <input type="email" id="cc_email" placeholder="Ej: usuario@ejemplo.com" class="block w-full p-3 border border-gray-300 rounded-lg">
             </div>
 
-            <div id="qrcodeDisplayContainer" class="mt-8 p-4">
-                <p class="qr-placeholder">El código QR aparecerá aquí</p>
-            </div>
-            <div id="messageBox" class="fixed top-5 right-5 bg-red-500 text-white p-4 rounded-lg shadow-xl hidden animate-pulse z-50">
-                <p id="messageText" class="text-sm"></p>
-            </div>
-        </main>
+        <div class="mb-4">
+            <label class="block font-medium mb-1">Asunto:</label>
+            <input type="text" id="asunto" placeholder="Ingrese el asunto..." class="p-3 w-full rounded border">
+        </div>
+        <div class="mb-4">
+            <label class="block font-medium mb-1">Mensaje:</label>
+            <textarea id="mensaje" rows="8" class="p-3 w-full rounded border"></textarea>
+        </div>
+        <div class="flex gap-4 mb-6">
+            <button id="generarQR" class="bg-blue-600 text-white font-bold py-3 px-6 rounded hover:bg-blue-700 transition">Generar QR y Enviar</button>
+            <button id="descargarQR" class="bg-gray-600 text-white font-bold py-3 px-6 rounded hover:bg-gray-700 transition" disabled>Descargar QR</button>
+        </div>
+        <div id="qrcodeDisplayContainer" class="flex justify-center items-center bg-white border rounded p-4 min-h-[280px] shadow">
+            <p class="text-gray-400">El código QR aparecerá aquí</p>
+        </div>
+        <div id="messageBox" class="fixed top-5 right-5 bg-red-500 text-white p-4 rounded-lg shadow-xl hidden animate-pulse z-50">
+            <p id="messageText" class="text-sm"></p>
+        </div>
     </div>
 
     <script>
-        // Default message content
-        const defaultMensaje = `•LICITACION: 
-•INGENIERO DE COMPRAS: 
-•N° DOC RFP ARIBA: 
-
-•EMPRESA: 
-•NOMBRE Y APELLIDO: 
-•RUT: 
-•NOTA: CONFIRMO COMO EMPRESA QUE ESTOY EN CONOCIMIENTO DE LAS ESPECIFICACIONES TECNICAS DE LICITACION Y ALCANCES DEL SERVICIO REVISADOS EN TERRENO.
-
-•ITO SOLICITANTE:
-•EMPRESAS ASISTENTES (COMPLETA ITO):
-•ACUERDOS (COMPLETA ITO):`;
-
-        // DOM Elements
         const emailField = document.getElementById('email');
         const asuntoField = document.getElementById('asunto');
         const mensajeField = document.getElementById('mensaje');
@@ -124,124 +58,102 @@
         const messageBox = document.getElementById('messageBox');
         const messageText = document.getElementById('messageText');
 
-        let qrCodeInstance = null; // To store the QRCode.js instance
+        let qrCodeInstance = null;
 
-        // Initialize message field
+        const defaultMensaje = `Licitación:\nID ariba: \nOT:\nSolicitante:\nÁrea:\nDescripción de obra:\nFecha visita:\nHora inicio:\nHora termino:\n\n*Datos de la empresa\nEmpresa: \nNombre visitante: \nObservaciones visita:\n\n`;
         mensajeField.value = defaultMensaje;
 
-        // Function to show a message to the user
         function showMessage(message, type = 'error') {
             messageText.textContent = message;
             messageBox.classList.remove('hidden', 'bg-red-500', 'bg-green-500', 'bg-sky-500');
-            if (type === 'error') {
-                messageBox.classList.add('bg-red-500');
-            } else { // 'success'
-                messageBox.classList.add('bg-sky-500');
-            }
-            messageBox.classList.remove('hidden');
-            // Make it disappear after 3 seconds
-            setTimeout(() => {
-                messageBox.classList.add('hidden');
-            }, 3000);
+            messageBox.classList.add(type === 'error' ? 'bg-red-500' : 'bg-sky-500');
+            setTimeout(() => messageBox.classList.add('hidden'), 3000);
         }
 
-        // Function to generate QR Code
+        function enviarEmailConQR(base64Image) {
+            const templateParams = {
+		to_email: to_email.value,
+                cc_email: cc_email.value,
+                subject: asuntoField.value,
+                message: mensajeField.value,
+                qr_base64: base64Image
+
+    
+
+            };
+
+            emailjs.send('service_000c0pa', 'template_am0ifl7', templateParams)
+                .then(() => {
+                    showMessage("Correo enviado con éxito.", "success");
+                }, (error) => {
+                    console.error('EmailJS error:', error);
+                    showMessage("Error al enviar el correo.");
+                });
+        }
+
         function generarCodigoQR() {
             const email = emailField.value;
-            // const asuntoBase = "Mail de Ariba "; // Prefix removed as per request
-            const asuntoIngresado = asuntoField.value.trim();
-            const asuntoCompleto = asuntoIngresado; // No more base prefix
-            const mensaje = mensajeField.value;
+	    const ccEmail = document.getElementById('cc_email').value.trim();
 
-            if (!asuntoIngresado) {
-                showMessage("Por favor, complete el campo 'Asunto'.");
-                asuntoField.focus();
-                return;
-            }
-            if (!mensaje.trim()) {
-                showMessage("Por favor, complete el campo 'Mensaje'.");
-                mensajeField.focus();
+            const asunto = asuntoField.value.trim();
+            const mensaje = mensajeField.value.trim();
+
+            if (!asunto || !mensaje) {
+                showMessage("Complete el asunto y el mensaje.");
                 return;
             }
 
-            // Clear previous QR code and placeholder
+            const mailtoLink = `mailto:${email}?subject=${encodeURIComponent(asunto)}&body=${encodeURIComponent(mensaje)}`;
+
+            if (mailtoLink.length > 2048) {
+                showMessage("El contenido es demasiado largo para un QR.");
+                return;
+            }
+
             qrcodeDisplayContainer.innerHTML = '';
-            qrcodeDisplayContainer.classList.remove('qr-placeholder');
 
+            const qrDiv = document.createElement('div');
+            qrcodeDisplayContainer.appendChild(qrDiv);
 
-            const mailtoLink = `mailto:${email}?subject=${encodeURIComponent(asuntoCompleto)}&body=${encodeURIComponent(mensaje)}`;
+            qrCodeInstance = new QRCode(qrDiv, {
+                text: mailtoLink,
+                width: 256,
+                height: 256,
+                colorDark: "#000",
+                colorLight: "#fff",
+                correctLevel: QRCode.CorrectLevel.H
+            });
 
-            // Check for mailto link length (practical limit for QR codes)
-            if (mailtoLink.length > 2048) { // A common practical limit
-                 showMessage("El contenido es demasiado largo para un código QR de tipo email. Intente acortar el asunto o el mensaje.");
-                 qrcodeDisplayContainer.innerHTML = '<p class="qr-placeholder text-red-500">Error: Contenido demasiado largo.</p>';
-                 descargarQRButton.disabled = true;
-                 return;
-            }
-
-            try {
-                // Create a div for QRCode.js to attach to.
-                const qrDiv = document.createElement('div');
-                qrcodeDisplayContainer.appendChild(qrDiv);
-
-                qrCodeInstance = new QRCode(qrDiv, {
-                    text: mailtoLink,
-                    width: 256,
-                    height: 256,
-                    colorDark: "#000000",
-                    colorLight: "#ffffff",
-                    correctLevel: QRCode.CorrectLevel.H
-                });
-                descargarQRButton.disabled = false;
-                showMessage("Código QR generado exitosamente.", "success");
-
-            } catch (error) {
-                console.error("Error generating QR Code:", error);
-                showMessage("Error al generar el código QR. Verifique la consola para más detalles.");
-                qrcodeDisplayContainer.innerHTML = '<p class="qr-placeholder text-red-500">Error al generar QR.</p>';
-                descargarQRButton.disabled = true;
-            }
+            // Esperar a que el QR se renderice
+            setTimeout(() => {
+                const canvas = qrDiv.querySelector('canvas');
+                if (canvas) {
+                    const base64Image = canvas.toDataURL('image/png');
+                    descargarQRButton.disabled = false;
+                    showMessage("Código QR generado y enviado.", "success");
+                    enviarEmailConQR(base64Image);
+                } else {
+                    showMessage("Error al generar el código QR.");
+                }
+            }, 1000);
         }
 
-        // Function to download QR Code
         function descargarCodigoQR() {
-            if (!qrCodeInstance) {
-                showMessage("Primero genere un código QR para descargarlo.");
+            const canvas = qrcodeDisplayContainer.querySelector('canvas');
+            if (!canvas) {
+                showMessage("Primero genere un código QR.");
                 return;
             }
-            
-            const canvas = qrcodeDisplayContainer.querySelector('canvas');
-            const img = qrcodeDisplayContainer.querySelector('img');
-
-            if (canvas) {
-                const dataURL = canvas.toDataURL('image/png');
-                const link = document.createElement('a');
-                link.href = dataURL;
-                link.download = 'visita_terreno_qr.png';
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            } else if (img && img.src) {
-                const link = document.createElement('a');
-                link.href = img.src;
-                link.download = 'visita_terreno_qr.png';
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            } else {
-                 showMessage("No se pudo encontrar la imagen del código QR para descargar.");
-                 console.error("QR Code image or canvas not found in container:", qrcodeDisplayContainer.innerHTML);
-            }
+            const link = document.createElement('a');
+            link.href = canvas.toDataURL('image/png');
+            link.download = 'visita_terreno_qr.png';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
         }
 
-        // Event Listeners
         generarQRButton.addEventListener('click', generarCodigoQR);
         descargarQRButton.addEventListener('click', descargarCodigoQR);
-
-        // Initial placeholder setup
-        if (qrcodeDisplayContainer.innerHTML.trim() === '') {
-             qrcodeDisplayContainer.innerHTML = '<p class="qr-placeholder">El código QR aparecerá aquí</p>';
-        }
     </script>
 </body>
 </html>
